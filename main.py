@@ -223,7 +223,7 @@ def draw_quadrilateral(
     fill_below_bottom_edge: bool = False,
 ) -> None:
     """Draw quadrilateral with given bottom and top edges."""
-    fill_color = "white"  # "white" Trying inverted colors
+    fill_color = "white"
     draw.polygon(
         [
             (bottom.start.x, bottom.start.y),
@@ -355,24 +355,24 @@ def create_tool_images_and_masks(root_path, num_images: int = 100, blob: bool = 
         vanishing_point = find_vanishing_point(first_bottom, first_top)
         center, radius = tip_circle_center_and_radius(first_top)
 
-        # # Draw second quadrilateral (consider changing parameters here)
-        # second_bottom = first_top
-        # second_top = top_given_bottom(second_bottom, TopGivenBottomParams())
-        # draw_quadrilateral(draw, second_bottom, second_top, fill_below_bottom_edge=False)
+        # Draw second quadrilateral (consider changing parameters here)
+        second_bottom = first_top
+        second_top = top_given_bottom(second_bottom, TopGivenBottomParams())
+        draw_quadrilateral(draw, second_bottom, second_top, fill_below_bottom_edge=False)
 
-        # # Draw third quadrilateral (50% chance of choosing to draw third)
-        # if random.random() > 0.5:
-        #     third_bottom = second_top
-        #     third_top = top_given_bottom(third_bottom, TopGivenBottomParams())
-        #     draw_quadrilateral(draw, third_bottom, third_top, fill_below_bottom_edge=False)
-        #     # create mask for the vanishing point
-        #     vanishing_point = find_vanishing_point(third_bottom, third_top)
-        #     center, radius = tip_circle_center_and_radius(third_top)
+        # Draw third quadrilateral (50% chance of choosing to draw third)
+        if random.random() > 0.5:
+            third_bottom = second_top
+            third_top = top_given_bottom(third_bottom, TopGivenBottomParams())
+            draw_quadrilateral(draw, third_bottom, third_top, fill_below_bottom_edge=False)
+            # create mask for the vanishing point
+            vanishing_point = find_vanishing_point(third_bottom, third_top)
+            center, radius = tip_circle_center_and_radius(third_top)
 
-        # # if third quadrilateral is not created, use the second quadrilateral for the vanishing point
-        # else:
-        #     vanishing_point = find_vanishing_point(second_bottom, second_top)
-        #     center, radius = tip_circle_center_and_radius(second_top)
+        # if third quadrilateral is not created, use the second quadrilateral for the vanishing point
+        else:
+            vanishing_point = find_vanishing_point(second_bottom, second_top)
+            center, radius = tip_circle_center_and_radius(second_top)
 
         # draw the circle at the tip of the last quadrilateral
         draw.ellipse([(center.x - radius + 1, center.y - radius + 1),
